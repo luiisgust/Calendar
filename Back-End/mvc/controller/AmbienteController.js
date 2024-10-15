@@ -1,14 +1,14 @@
-const Docente = require('../model/docenteModel')
+const Ambiente = require('../model/ambienteModel')
 
 module.exports = (app) => {
 
 
     // Todos os gets
-    app.get("/docente", async (req, res) => {        
-        const docente = new Docente()
+    app.get("/ambiente", async (req, res) => {        
+        const ambiente = new Ambiente()
         
         res.setHeader("Access-Control-Allow-Origin","*")
-        res.json(await docente.consultarTodos())        
+        res.json(await ambiente.consultarTodos())        
     })
         
     // app.get("/missao", (req, res) => {
@@ -26,27 +26,25 @@ module.exports = (app) => {
 
    
     // Todos os post
-    app.post('/registerdocente', async (req, res) => {
+    app.post('/registerambiente', async (req, res) => {
 
 
         console.log(req.body)
-        const docente = new Docente();
+        const ambiente = new Ambiente();
         const { 
             id: id,
-            nomeD: nomeD, 
-            sobrenomeD: sobrenomeD,
-            exibicaoD: exibicaoD  } = req.body;
+            nomeA: nomeA } = req.body;
 
         res.setHeader("Access-Control-Allow-Origin","*")
  
         let status;
 
         if(!id){
-            status = await docente.registrarDocente(nomeD, sobrenomeD, exibicaoD)
+            status = await ambiente.registrarAmbiente(nomeA)
             res.json({isAuth: status})
         }
         else{
-            status = await docente.att(id, nomeD, sobrenomeD, exibicaoD)
+            status = await ambiente.att(id, nomeA)
         }   
 
        
@@ -56,11 +54,11 @@ module.exports = (app) => {
 
 
     // Delete
-    app.delete("/docente/:id", async (req, res) => {
+    app.delete("/ambiente/:id", async (req, res) => {
         res.setHeader("Access-Control-Allow-Origin","*")
-        const docente = new Docente()
+        const ambiente = new Ambiente()
 
-        const status = await docente.del(req.params.id)
+        const status = await ambiente.del(req.params.id)
 
         res.json({
             status
@@ -69,20 +67,18 @@ module.exports = (app) => {
 
 
     // Update
-    app.put("/docente/:id", async (req, res) =>{
-        const docente = new Docente()
+    app.put("/ambiente/:id", async (req, res) =>{
+        const ambiente = new Ambiente()
         
         const {
-            nomeD,
-            sobrenomeD,
-            exibicaoD,
+            nomeA,
             id
         } = req.body;
 
-        console.log({nomeD, sobrenomeD, exibicaoD, id})
+        console.log({nomeA, id})
       
         if(id == req.params.id){
-          const r =  await docente.att(nomeD, sobrenomeD, exibicaoD, id)
+          const r =  await Ambiente.att(nomeA, id)
           res.json({msg: "O total de linhas alteradas: "+r})
         }
         else{

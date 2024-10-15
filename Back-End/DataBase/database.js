@@ -41,7 +41,7 @@ class DataBaseMySQL {
                 id_docenteA = "${docenteA}",
                 id_ambienteA = "${ambienteA}",
                 id_periodoA = "${periodoA}",
-                data_agendamento = "${data_agend}",
+                data_agendamento = "${data_agend}"
             where id_agendamento = ${id}`
 
         const query = await this.#connection.execute(sql)
@@ -72,7 +72,7 @@ class DataBaseMySQL {
     }
     async upAmbiente(nomeA, id) {
         const sql = `update ambiente
-            set id_ambiente = "${nomeA}",
+            set nome_ambiente = "${nomeA}"
             where id_ambiente = ${id}`
 
         const query = await this.#connection.execute(sql)
@@ -107,7 +107,7 @@ class DataBaseMySQL {
                 carga_horaria = "${carga}",
                 data_inicio = "${dataI}",
                 data_final = "${dataF}",
-                id_horarioAula = "${horarioA}",
+                id_horarioAula = "${horarioA}"
             where id_curso = ${id}`
 
         const query = await this.#connection.execute(sql)
@@ -140,7 +140,7 @@ class DataBaseMySQL {
         const sql = `update agendamento
             set nome_docente = "${nomeD}",
                 sobrenome_docente = "${sobrenomeD}",
-                nome_exibicao = "${exibicaoD}",
+                nome_exibicao = "${exibicaoD}"
             where id_docente = ${id}`
 
         const query = await this.#connection.execute(sql)
@@ -175,7 +175,7 @@ class DataBaseMySQL {
                 id_docenteP = "${docenteP}",
                 id_docenteA = "${docenteA}",
                 id_cursoT = "${cursoT}",
-                id_fatorT = "${fatorT}",
+                id_fatorT = "${fatorT}"
             where id_turma = ${id}`
 
         const query = await this.#connection.execute(sql)
@@ -208,7 +208,7 @@ class DataBaseMySQL {
         const sql = `update usuario
             set nome_usuario = "${nomeU}",
                 email_usuario = "${emailU}",
-                senha_usuario = "${senhaU}",
+                senha_usuario = "${senhaU}"
             where id_usuario = ${id}`
 
         const query = await this.#connection.execute(sql)
