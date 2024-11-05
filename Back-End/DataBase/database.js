@@ -89,8 +89,8 @@ class DataBaseMySQL {
         return query[0]
     }
     async AddCurso(dados) {
-        const sql = `insert into curso (nome_curso, carga_horaria, data_inicio, data_final, id_horarioAula)
-        values ('${dados.nomeC}','${dados.carga}','${dados.dataI}','${dados.dataF}','${dados.horarioA}')`
+        const sql = `insert into cursos (nome_curso, carga_horaria, data_inicio, data_final, id_horarioAula)
+        values ('${dados.nomeC}','${dados.carga}','${dados.dataI}','${dados.dataF}','${dados.horarioAulaC}')`
 
         const query = await this.#connection.execute(sql)
         return query[0]
@@ -101,13 +101,13 @@ class DataBaseMySQL {
         const query = await this.#connection.execute(sql)
         return query[0]
     }
-    async upCurso(nomeC, carga, dataI, dataF, horarioA, id) {
+    async upCurso(nomeC, carga, dataI, dataF, horarioAulaC, id) {
         const sql = `update cursos
             set nome_curso = "${nomeC}",
                 carga_horaria = "${carga}",
                 data_inicio = "${dataI}",
                 data_final = "${dataF}",
-                id_horarioAula = "${horarioA}"
+                id_horarioAula = "${horarioAulaC}"
             where id_curso = ${id}`
 
         const query = await this.#connection.execute(sql)
@@ -137,7 +137,7 @@ class DataBaseMySQL {
         return query[0]
     }
     async upDocente(nomeD, sobrenomeD, exibicaoD, id) {
-        const sql = `update agendamento
+        const sql = `update docentes
             set nome_docente = "${nomeD}",
                 sobrenome_docente = "${sobrenomeD}",
                 nome_exibicao = "${exibicaoD}"
@@ -157,7 +157,7 @@ class DataBaseMySQL {
         return query[0]
     }
     async AddTurma(dados) {
-        const sql = `insert into turmas (nome_turma, id_docenteP, id_docenteA, id_cursoT, id_fatorT)
+        const sql = `insert into turmas (nome_turma, id_docenteP, id_docenteA, id_curso, id_fator)
         values ('${dados.nomeT}','${dados.docenteP}','${dados.docenteA}','${dados.cursoT}','${dados.fatorT}')`
 
         const query = await this.#connection.execute(sql)
@@ -170,12 +170,12 @@ class DataBaseMySQL {
         return query[0]
     }
     async upTurma(nomeT, docenteP, docenteA, cursoT, fatorT, id) {
-        const sql = `update agendamento
+        const sql = `update turmas
             set nome_turma = "${nomeT}",
                 id_docenteP = "${docenteP}",
                 id_docenteA = "${docenteA}",
-                id_cursoT = "${cursoT}",
-                id_fatorT = "${fatorT}"
+                id_curso = "${cursoT}",
+                id_fator = "${fatorT}"
             where id_turma = ${id}`
 
         const query = await this.#connection.execute(sql)

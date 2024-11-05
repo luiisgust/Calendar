@@ -1,14 +1,14 @@
-const Ambiente = require('../model/ambienteModel')
+const Turma = require('../model/turmaModel')
 
 module.exports = (app) => {
 
 
     // Todos os gets
-    app.get("/ambiente", async (req, res) => {        
-        const ambiente = new Ambiente()
+    app.get("/turma", async (req, res) => {        
+        const turma = new Turma()
         
         res.setHeader("Access-Control-Allow-Origin","*")
-        res.json(await ambiente.consultarTodos())        
+        res.json(await turma.consultarTodos())        
     })
         
     // app.get("/missao", (req, res) => {
@@ -26,25 +26,29 @@ module.exports = (app) => {
 
    
     // Todos os post
-    app.post('/registerambiente', async (req, res) => {
+    app.post('/registerturma', async (req, res) => {
 
 
         console.log(req.body)
-        const ambiente = new Ambiente();
+        const turma = new Turma();
         const { 
             id: id,
-            nomeA: nomeA } = req.body;
+            nomeT: nomeT,
+            docenteP: docenteP,
+            docenteA: docenteA,
+            cursoT: cursoT,
+            fatorT: fatorT } = req.body;
 
         res.setHeader("Access-Control-Allow-Origin","*")
  
         let status;
 
         if(!id){
-            status = await ambiente.registrarAmbiente(nomeA)
+            status = await turma.registrarturma(nomeT, docenteP, docenteA, cursoT, fatorT)
             res.json({isAuth: status})
         }
         else{
-            status = await ambiente.att(id, nomeA)
+            status = await turma.att(id, nomeT, docenteP, docenteA, cursoT, fatorT)
         }   
 
        
@@ -54,11 +58,11 @@ module.exports = (app) => {
 
 
     // Delete
-    app.delete("/ambiente/:id", async (req, res) => {
+    app.delete("/turma/:id", async (req, res) => {
         res.setHeader("Access-Control-Allow-Origin","*")
-        const ambiente = new Ambiente()
+        const turma = new Turma()
 
-        const status = await ambiente.del(req.params.id)
+        const status = await turma.del(req.params.id)
 
         res.json({
             status
@@ -67,18 +71,22 @@ module.exports = (app) => {
 
 
     // Update
-    app.put("/ambiente/:id", async (req, res) =>{
-        const ambiente = new Ambiente()
+    app.put("/turma/:id", async (req, res) =>{
+        const turma = new Turma()
         
         const {
-            nomeA,
+            nomeT,
+            docenteP,
+            docenteA,
+            cursoT,
+            fatorT,
             id
         } = req.body;
 
-        console.log({nomeA, id})
+        console.log({nomeT, docenteP, docenteA, cursoT, fatorT, id})
       
         if(id == req.params.id){
-          const r =  await ambiente.att(nomeA, id)
+          const r =  await turma.att(nomeT, docenteP, docenteA, cursoT, fatorT, id)
           res.json({msg: "O total de linhas alteradas: "+r})
         }
         else{
