@@ -7,10 +7,10 @@ class User {
     #emailU
     #senhaU
 
-    constructor(nome, email, senha){
-        this.#nomeU = nome
-        this.#emailU = email
-        this.#senhaU = senha
+    constructor(nomeU, emailU, senhaU){
+        this.#nomeU = nomeU
+        this.#emailU = emailU
+        this.#senhaU = senhaU
     }
 
     get id() {
@@ -20,46 +20,34 @@ class User {
         this.#id = value
     }
 
-    get nome() {
+    get nomeU() {
         return this.#nomeU
     }
-    set nome(value) {
+    set nomeU(value) {
         this.#nomeU = value
     }
 
-    get email() {
+    get emailU() {
         return this.#emailU
     }
-    set email(value) {
+    set emailU(value) {
         this.#emailU = value
     }
 
-    get senha() {
+    get senhaU() {
         return this.#senhaU
     }
-    set senha(value) {
+    set senhaU(value) {
         this.#senhaU = value
     }
-
-
-    permitirEntrada(dados){
-        if(dados.length > 0){
-            return true
-        }
-        else{
-            return false
-        }
-    }
-
-
 
     toJson(){
 
         return {
             "id": this.#id,
-            "nome": this.#nomeU,
-            "email": this.#emailU,
-            "senha": this.#senhaU
+            "nomeU": this.#nomeU,
+            "emailU": this.#emailU,
+            "senhaU": this.#senhaU
         }
     }
 }
@@ -72,15 +60,58 @@ class UserDAO{
         this.#db = new DataBaseMySQL()
     }
 
-    async logar(email, senha){
+    async consultarUm(id){      
 
-        const user = new User(email, senha)
+        const query = await this.#db.selectUsuarioId(id)
 
-        const query = await this.#db.selectUsuario(user.email, user.senha)
-       
+        
+        const user = new User()
 
-        return user.permitirEntrada(query[0])
+        if(query){
+            user.id = query[0].id_usuario
+            user.nomeU = query[0].nome_usuario
+            user.emailU = query[0].email_usuario
+            user.senhaU = query[0].senha_usuario
+        }
+
+ 
+        return user.toJson()
     }
+
+
+    async cadastro(
+        nomeU,
+        emailU,
+        senhaU){
+
+         
+            const user = new User(nomeU, emailU, senhaU);
+
+            const sql = await this.#db.AddUsuario(user.toJson())
+
+            return sql.insertId;
+        }
+
+    async del(id){
+        const linhasAfetadas =  await this.#db.delUsuario(id)
+        return linhasAfetadas.affectedRows
+    }
+
+    async att(nomeU, emailU, senhaU, id){
+        const user = new User(nomeU, emailU, senhaU)
+        user.id = id
+
+        const r = await this.#db.upUsuario(
+            user.nomeU,
+            user.emailU,
+            user.senhaU,
+            user.id
+        )
+
+        return r.affectedRows;
+    }
+
+    
 }
 
 module.exports = UserDAO

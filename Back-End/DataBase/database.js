@@ -1,4 +1,4 @@
-const mysql = require('mysql2')
+var mysql = require('mysql2')
 
 class DataBaseMySQL {
 
@@ -6,11 +6,12 @@ class DataBaseMySQL {
 
     constructor() {
         this.#connection = mysql.createPool({
-            host: 'localhost',
-            user: 'root',
-            password: '',
-            database: 'calendar'
-        }).promise()
+            host: process.env.DATABASE_HOST,
+            user: process.env.USER,
+            password: process.env.PASSWORD,
+            database: process.env.DATABASE,
+            port: process.env.DATABASE_PORT
+        }).promise();
     }
 
     // Agendamento
@@ -183,8 +184,8 @@ class DataBaseMySQL {
     }
 
     // Usuario
-    async selectUsuario(email, senha) {
-        const query = await this.#connection.query('select * from usuario where email_usuario =? and senha_usuario =?',[email, senha])
+    async selectUsuarioLogin(emailU, senhaU) {
+        const query = await this.#connection.query('select * from usuario where email_usuario =? and senha_usuario =?',[emailU, senhaU])
         return query
     }
     async selectUsuarioId(id) {
@@ -204,7 +205,7 @@ class DataBaseMySQL {
         const query = await this.#connection.execute(sql)
         return query[0]
     }
-    async upAgendamento(nomeU, emailU, senhaU, id) {
+    async upUsuario(nomeU, emailU, senhaU, id) {
         const sql = `update usuario
             set nome_usuario = "${nomeU}",
                 email_usuario = "${emailU}",

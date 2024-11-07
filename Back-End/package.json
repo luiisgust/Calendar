@@ -5,13 +5,14 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node main.js"
+    "start": "node --env-file=.env main.js"
   },
   "keywords": [],
   "author": "Luis Gustavo",
   "license": "ISC",
   "dependencies": {
     "consign": "^0.1.6",
+    "cors": "^2.8.5",
     "ejs": "^3.1.10",
     "express": "^4.21.0",
     "mysql2": "^3.11.3",
