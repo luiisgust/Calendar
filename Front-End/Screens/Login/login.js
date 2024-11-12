@@ -1,32 +1,39 @@
-const form = document.getElementById('login-form')
-const message = document.getElementById('message')
+const form = document.getElementById('login-form');
+const message = document.getElementById('message');
 
-form.addEventListener('submit', (event) => {
-    event.preventDefault();
+form.addEventListener('submit', async (event) => {
+    event.preventDefault(); // Evita o envio padrão do formulário
 
-    const email = document.getElementById('emailU').value;
-    const senha = document.getElementById('senhaU').value;
+    // Obtém os valores dos campos de entrada
+    const emailU = document.getElementById('emailU').value;
+    const senhaU = document.getElementById('senhaU').value;
 
-    fetch('http://10.111.9.76:3000/logar',{
-        method: 'POST',
-        headers: {
-            'Content-type': 'application/json'
-        },
-        body: JSON.stringify({email, senha})
-    })
-    .then(res => res.json())
-    .then(data => {
+    try {
+        const response = await fetch('http://10.111.9.76:3000/logar', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            credentials: 'include', // Inclua esta linha para enviar o cookie de sessão
+            body: JSON.stringify({ emailU, senhaU }) // Envia os dados em formato JSON
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erro HTTP! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
         if (data.isAuth) {
-            // Redirecionar para a página desejada
-            window.location.href = './teste.html';
-          } else {
-            message.textContent = 'Email ou senha incorretos.';
-          }
-    })
-    .catch(error => {
+            window.location.href = 'home.html'; // Redireciona para a página desejada
+        } else {
+            message.textContent = 'Email ou senha incorretos.'; // Exibe mensagem de erro
+        }
+    } catch (error) {
         console.error('Erro ao fazer login:', error);
-        message.textContent = 'Ocorreu um erro ao fazer login. Tente novamente mais tarde.';
-      });
-})
+        message.textContent = 'Ocorreu um erro ao fazer login. Tente novamente mais tarde.'; // Exibe mensagem de erro
+    }
+});
 
-console.log(form)
+// Para verificação, pode remover posteriormente
+console.log(form);

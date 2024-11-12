@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Conta</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f3f4f6;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        #message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bem-vindo à sua conta</h1>
+        <div id="user-info">
+            <!-- Informações do usuário aparecerão aqui -->
+        </div>
+        <button id="logout-btn">Logout</button>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Busca as informações do usuário
+            fetch('http://10.111.9.76:3000/conta', {
+                method: 'GET',
+                credentials: 'include' // Envia cookies com a requisição
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Não autorizado');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Exibe os dados do usuário
+                const userInfoDiv = document.getElementById('user-info');
+                userInfoDiv.innerHTML = `
+                    <p><strong>Nome:</strong> ${data.nome}</p>
+                    <p><strong>Email:</strong> ${data.email}</p>
+                    <!-- Adicione outros dados, se necessário -->
+                `;
+            })
+            .catch(error => {
+                document.getElementById('message').textContent = error.message;
+            });
+
+            // Logout
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                fetch('/logout', {
+                    method: 'POST',
+                    credentials: 'include'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === 'Logout bem-sucedido.') {
+                        window.location.href = '/login.html'; // Redireciona para a página de login
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao fazer logout:', error);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -7,9 +7,11 @@ module.exports = (app) => {
     
     app.get("/usuario/:id", async (req, res) => {
         const user = new User()
-        
-        res.setHeader("Access-Control-Allow-Origin","*")
-        res.json(await user.consultarUm())
+        const status = await user.consultarUm(req.params.id)
+
+        res.json(
+            [{...status}]
+        )
     })
 
 

@@ -184,9 +184,12 @@ class DataBaseMySQL {
     }
 
     // Usuario
-    async selectUsuarioLogin(emailU, senhaU) {
-        const query = await this.#connection.query('select * from usuario where email_usuario =? and senha_usuario =?',[emailU, senhaU])
-        return query
+    async selectUsuarioLogin(emailU, senhaU) { 
+        const query = await this.#connection.query(
+            'SELECT * FROM usuario WHERE email_usuario = ? AND senha_usuario = ?', 
+            [emailU, senhaU]
+        );
+        return query[0];
     }
     async selectUsuarioId(id) {
         const query = await this.#connection.query('select * from usuario where id_usuario =' +id)
