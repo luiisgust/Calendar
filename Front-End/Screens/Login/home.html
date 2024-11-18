@@ -39,9 +39,9 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Busca as informações do usuário
-            fetch('http://10.111.9.76:3000/conta', {
-                method: 'GET',
-                credentials: 'include' // Envia cookies com a requisição
+            fetch('http://192.168.0.135:3000/conta', {
+                 method: 'GET',
+                credentials: 'include' // Garante o envio do cookie
             })
             .then(response => {
                 if (!response.ok) {
@@ -53,9 +53,8 @@
                 // Exibe os dados do usuário
                 const userInfoDiv = document.getElementById('user-info');
                 userInfoDiv.innerHTML = `
-                    <p><strong>Nome:</strong> ${data.nome}</p>
-                    <p><strong>Email:</strong> ${data.email}</p>
-                    <!-- Adicione outros dados, se necessário -->
+                    <p><div>Nome:</div> ${data.nome}</p>
+                    <p><div>Email:</div> ${data.email}</p>
                 `;
             })
             .catch(error => {

@@ -9,7 +9,7 @@ form.addEventListener('submit', async (event) => {
     const senhaU = document.getElementById('senhaU').value;
 
     try {
-        const response = await fetch('http://10.111.9.76:3000/logar', {
+        const response = await fetch('http://192.168.0.135:3000/logar', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -29,6 +29,7 @@ form.addEventListener('submit', async (event) => {
         } else {
             message.textContent = 'Email ou senha incorretos.'; // Exibe mensagem de erro
         }
+        console.log('Resposta do servidor:', data);
     } catch (error) {
         console.error('Erro ao fazer login:', error);
         message.textContent = 'Ocorreu um erro ao fazer login. Tente novamente mais tarde.'; // Exibe mensagem de erro

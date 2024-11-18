@@ -10,18 +10,29 @@ app.set('view','mvc/view')
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 app.use(cors({
-    origin: true, // Substitua pelo endereço do seu front-end
-    credentials: true
+    origin: (origin, callback) => {
+        console.log('Origem da requisição:', origin); // Log de debug
+        const allowedOrigins = ['http://192.168.0.135:8080', 'http://localhost:8080'];
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            console.error('Origem não permitida:', origin); // Log de erro
+            callback(new Error('Não autorizado pelo CORS'));
+        }
+    },
+    credentials: true,
 }));
 
+
+
 app.use(session({
-    secret: 'C4l$nd4r2024', // Chave secreta para assinar a sessão
-    resave: false,                // Não salva a sessão se nenhuma modificação foi feita
-    saveUninitialized: false,     // Não cria uma sessão para clientes não autenticados
+    secret: 'C4l$nd4r2024',
+    resave: false,
+    saveUninitialized: false,
     cookie: {
-        maxAge: 60 * 60 * 1000,   // Tempo de vida do cookie da sessão (1 hora)
-        secure: true,            // Use "true" se estiver usando HTTPS
-        httpOnly: true            // Protege contra acessos via JavaScript
+        maxAge: 60 * 60 * 1000, // 1 hora
+        secure: false, // Deve ser false se você estiver em HTTP
+        httpOnly: true // Protege o cookie contra acessos via JavaScript
     }
 }));
 

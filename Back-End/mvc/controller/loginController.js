@@ -13,12 +13,17 @@ module.exports = (app) => {
 
 
     // Todos os gets
-    app.get('/conta', authMiddleware, async (req, res) => {
-        const userId = req.session.userId;
-
-        const dadosUsuario = await new Login().buscarDadosUsuario(userId);
-
-        res.json(dadosUsuario);
+    app.get('/conta', (req, res) => {
+        console.log('Sessão na rota /conta:', req.session);
+    
+        if (!req.session.userId) {
+            return res.status(401).json({ message: 'Não autorizado' });
+        }
+    
+        res.json({
+            nome: 'Nome do Usuário',
+            email: 'email@example.com'
+        });
     });
     app.get('/check-session', (req, res) => {
         if (req.session.userId) {
@@ -32,17 +37,22 @@ module.exports = (app) => {
     // Todos os post
     app.post('/logar', async (req, res) => {
         const { emailU, senhaU } = req.body;
-
-        let login = new Login();
-        let userId = await login.logar(emailU, senhaU);
-
-        if (userId) {
-            req.session.userId = userId; // Salva o userId na sessão
-            res.json({ isAuth: true });
+    
+        // Lógica de validação (substitua pela sua)
+        const permitido = await new LoginDAO().logar(emailU, senhaU);
+    
+        if (permitido) {
+            // Salvar na sessão
+            req.session.userId = permitido.id;
+            console.log('Sessão salva no login:', req.session);
+    
+            return res.json({ isAuth: true });
         } else {
-            res.json({ isAuth: false, message: 'Credenciais inválidas' });
+            console.log('Login inválido');
+            return res.status(401).json({ isAuth: false });
         }
     });
+    
 
     app.post('/logout', (req, res) => {
         req.session.destroy(err => {
