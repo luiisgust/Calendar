@@ -11,20 +11,21 @@ module.exports = (app) => {
         }
     }
 
+    const verificarAutenticacao = (req, res, next) => {
+        if (req.session.userId) {
+            next(); // Usuário autenticado, continue para a próxima função
+        } else {
+            res.status(401).send({ error: 'Não autorizado!' });
+        }
+    };
+    
+
 
     // Todos os gets
-    app.get('/conta', (req, res) => {
-        console.log('Sessão na rota /conta:', req.session);
-    
-        if (!req.session.userId) {
-            return res.status(401).json({ message: 'Não autorizado' });
-        }
-    
-        res.json({
-            nome: 'Nome do Usuário',
-            email: 'email@example.com'
-        });
+    app.get('/conta', verificarAutenticacao, (req, res) => {
+        res.status(200).send({ message: 'Bem-vindo à sua conta!' });
     });
+    
     app.get('/check-session', (req, res) => {
         if (req.session.userId) {
             res.json({ isAuth: true, userId: req.session.userId });
@@ -33,35 +34,45 @@ module.exports = (app) => {
         }
     });
 
+    app.get('/favicon.ico', (req, res) => res.status(204).end());
+
+
 
     // Todos os post
-    app.post('/logar', async (req, res) => {
-        const { emailU, senhaU } = req.body;
+    app.post('/logar', (req, res) => {
+        console.log('Dados recebidos no login:', req.body);
     
-        // Lógica de validação (substitua pela sua)
-        const permitido = await new LoginDAO().logar(emailU, senhaU);
+        try {
+            const { emailU, senhaU } = req.body;
     
-        if (permitido) {
-            // Salvar na sessão
-            req.session.userId = permitido.id;
-            console.log('Sessão salva no login:', req.session);
-    
-            return res.json({ isAuth: true });
-        } else {
-            console.log('Login inválido');
-            return res.status(401).json({ isAuth: false });
+            // Simulação de autenticação
+            if (emailU === 'gustavofon789@gmail.com' && senhaU === 'Eakemy26@') {
+                req.session.userId = 1;
+                console.log('Login bem-sucedido.');
+                return res.status(200).json({ isAuth: true });
+            } else {
+                console.log('Login falhou: Credenciais incorretas.');
+                return res.status(401).json({ isAuth: false, error: 'Credenciais incorretas.' });
+            }
+        } catch (error) {
+            console.error('Erro no login:', error);
+            return res.status(500).send('Erro interno do servidor.');
         }
     });
     
+    
+    
 
     app.post('/logout', (req, res) => {
-        req.session.destroy(err => {
+        req.session.destroy((err) => {
             if (err) {
-                return res.status(500).json({ message: 'Erro ao fazer logout.' });
+                console.error('Erro ao encerrar sessão:', err);
+                return res.status(500).json({ success: false, message: 'Erro ao fazer logout.' });
             }
-            res.clearCookie('connect.sid'); // Limpa o cookie de sessão
-            res.json({ message: 'Logout bem-sucedido.' });
+            res.clearCookie('connect.sid'); // Limpa o cookie de sessão no navegador
+            res.status(200).json({ success: true, message: 'Logout realizado com sucesso.' });
         });
     });
+    
      
 }

@@ -9,10 +9,19 @@ app.set('view','mvc/view')
 
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
+
+
+app.use(cors({
+    origin: 'http://172.16.22.198:8080', // Endereço do front-end
+    credentials: true // Permitir cookies/sessões
+}));
+
+
+const allowedOrigins = ['http://172.16.22.198:8080', 'http://localhost:8080'];
 app.use(cors({
     origin: (origin, callback) => {
         console.log('Origem da requisição:', origin); // Log de debug
-        const allowedOrigins = ['http://192.168.0.135:8080', 'http://localhost:8080'];
+        
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
@@ -23,16 +32,23 @@ app.use(cors({
     credentials: true,
 }));
 
+app.use((req, res, next) => {
+    console.log('Origem da requisição:', req.headers.origin);
+    next();
+});
+
+
 
 
 app.use(session({
-    secret: 'C4l$nd4r2024',
+    secret: process.env.SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
         maxAge: 60 * 60 * 1000, // 1 hora
         secure: false, // Deve ser false se você estiver em HTTP
-        httpOnly: true // Protege o cookie contra acessos via JavaScript
+        httpOnly: true,
+        sameSite: 'lax'
     }
 }));
 
@@ -41,4 +57,4 @@ consign()
     .into(app)
 
     app.listen(process.env.PORT || 3000, () => console.log('Online server at port 3000'))
-module.exports = app
+module.exports = app 
