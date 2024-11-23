@@ -10,14 +10,14 @@ app.set('view','mvc/view')
 app.use(express.json())
 app.use(express.urlencoded({extended:true}))
 
-
+ 
 app.use(cors({
-    origin: 'http://172.16.22.198:8080', // Endereço do front-end
+    origin: 'http://192.168.0.135:8080', // Endereço do front-end
     credentials: true // Permitir cookies/sessões
 }));
 
 
-const allowedOrigins = ['http://172.16.22.198:8080', 'http://localhost:8080'];
+const allowedOrigins = ['http://192.168.0.135:8080', 'http://localhost:8080'];
 app.use(cors({
     origin: (origin, callback) => {
         console.log('Origem da requisição:', origin); // Log de debug
@@ -41,7 +41,7 @@ app.use((req, res, next) => {
 
 
 app.use(session({
-    secret: process.env.SECRET,
+    secret: process.env.SECRET || 'calendar',
     resave: false,
     saveUninitialized: false,
     cookie: {

@@ -6,26 +6,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../assets/Semantic-UI-CSS-master/semantic.css">
     <title>Login</title>
+    <style>
+        body{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-login{
+            width: 30%;
+            height: 40%;
+        }
+
+    </style>
 </head>
 <body>
 
-    <form id="login-form">
-        <div class="ui inverted segment">
-            <div class="ui inverted form">
-            <div class="two fields">
-                <div class="field">
-                <label form="emailU">Email</label>
-                <input placeholder="exemple@exemple.com" type="email" id="emailU" name="emailU">
-                </div>
-                <div class="field">
-                <label for="senhaU">Senha</label>
-                <input placeholder="Password" type="password" id="senhaU" name="senhaU">
+    <div class="form-login">
+        <form id="login-form">
+            <div class="ui inverted segment">
+                <h1 class="ui header center aligned">Sistema de Cursos</h1>
+                <div class="ui inverted form">
+                    <div class="field">
+                        <div class="field">
+                        <label form="emailU">Email</label>
+                        <input placeholder="exemple@exemple.com" type="email" id="emailU" name="emailU">
+                        </div>
+                        <div class="field">
+                        <label for="senhaU">Senha</label>
+                        <input placeholder="Password" type="password" id="senhaU" name="senhaU">
+                        </div>
+                        
+                    </div>
                 </div>
             </div>
-            <button type="submit" class="ui button" id="btn-primary">Acessar</button>
-            </div>
-        </div>
-    </form>
+            <button type="submit" class="fluid ui button blue" id="btn-primary">Acessar</button>
+            <div id="message" style="color: red; text-align: center; margin-top: 10px;"></div>
+        </form> 
+    </div>
+    
 
     
 

@@ -3,14 +3,6 @@ const Login = require('../model/loginModel')
 
 module.exports = (app) => {
 
-    function authMiddleware(req, res, next) {
-        if (req.session.userId) {
-            next(); // Usuário autenticado, prossiga para a próxima função
-        } else {
-            res.status(401).json({ message: 'Não autorizado. Por favor, faça login.' });
-        }
-    }
-
     const verificarAutenticacao = (req, res, next) => {
         if (req.session.userId) {
             next(); // Usuário autenticado, continue para a próxima função

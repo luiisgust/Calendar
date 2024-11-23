@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Busca as informações do usuário
-    fetch('http://172.16.22.198:3000/conta', {
+    fetch('http://192.168.0.135:3000/conta', {
         method: 'GET',
         credentials: 'include'
     }).then(response => {
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Logout
     document.getElementById('logout-btn').addEventListener('click', async () => {
     try {
-        const response = await fetch('http://172.16.22.198:3000/logout', {
+        const response = await fetch('http://192.168.0.135:3000/logout', {
             method: 'POST', // Certifique-se de usar o método correto (conforme o servidor)
             credentials: 'include', // Inclui o cookie de sessão na requisição
         });
@@ -45,4 +45,110 @@ document.addEventListener('DOMContentLoaded', () => {
         alert('Ocorreu um erro ao fazer logout. Tente novamente mais tarde.');
     }
     });
+});
+
+
+
+document.getElementById('agendamento').addEventListener('click', async (event) => {
+    event.preventDefault(); // Evita o redirecionamento
+    try {
+        const response = await fetch('http://192.168.0.135:3000/agendamento', {
+            method: 'GET',
+            credentials: 'include', // Inclui cookies de sessão
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erro HTTP! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data);
+        // Redireciona para a página de agendamento
+        window.location.href = '../MainScreen/agendamento/agendamento.html';
+    } catch (error) {
+        console.error('Erro ao fazer fetch:', error);
+    }
+});
+
+
+document.getElementById('ambiente').addEventListener('click', async (event) => {
+    event.preventDefault(); // Evita o redirecionamento
+    try {
+        const response = await fetch('http://192.168.0.135:3000/ambiente', {
+            method: 'GET',
+            credentials: 'include', // Inclui cookies de sessão
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erro HTTP! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data);
+        // Redireciona para a página de ambiente
+        window.location.href = '../MainScreen/ambiente/ambiente.html';
+    } catch (error) {
+        console.error('Erro ao fazer fetch:', error);
+    }
+});
+
+document.getElementById('agendamento').addEventListener('click', async (event) => {
+    event.preventDefault(); // Evita o redirecionamento
+    try {
+        const response = await fetch('http://192.168.0.135:3000/agendamento', {
+            method: 'GET',
+            credentials: 'include', // Inclui cookies de sessão
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erro HTTP! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data);
+        // Redireciona para a página de agendamento
+        window.location.href = '../MainScreen/agendamento/agendamento.html';
+    } catch (error) {
+        console.error('Erro ao fazer fetch:', error);
+    }
+});
+document.getElementById('agendamento').addEventListener('click', async (event) => {
+    event.preventDefault(); // Evita o redirecionamento
+    try {
+        const response = await fetch('http://192.168.0.135:3000/agendamento', {
+            method: 'GET',
+            credentials: 'include', // Inclui cookies de sessão
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erro HTTP! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data);
+        // Redireciona para a página de agendamento
+        window.location.href = '../MainScreen/agendamento/agendamento.html';
+    } catch (error) {
+        console.error('Erro ao fazer fetch:', error);
+    }
+});
+document.getElementById('agendamento').addEventListener('click', async (event) => {
+    event.preventDefault(); // Evita o redirecionamento
+    try {
+        const response = await fetch('http://192.168.0.135:3000/agendamento', {
+            method: 'GET',
+            credentials: 'include', // Inclui cookies de sessão
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erro HTTP! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data);
+        // Redireciona para a página de agendamento
+        window.location.href = '../MainScreen/agendamento/agendamento.html';
+    } catch (error) {
+        console.error('Erro ao fazer fetch:', error);
+    }
 });
