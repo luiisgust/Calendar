@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamento</title>
+    <link rel="stylesheet" href="../../../assets/Semantic-UI-CSS-master/semantic.css">
+    <style>
+      body{
+        padding: 10px;
+      }
+    </style>
+</head>
+<body>
+
+    <h1 class="ui header center aligned">Agendamento</h1>
+    <button id="back-btn" class="ui inverted secondary button">Voltar</button>
+    <div class="ui menu">
+        <a class="item" id="agendamento">
+          Agendamento
+        </a>
+        <a class="item" id="curso">
+          Cursos
+        </a>
+        <a class="item" id="docente">
+          Docente
+        </a>
+        <a class="item" id="turma">
+          Turmas
+        </a>
+        <div class="right item">
+            <button class="ui inverted red button" id="logout-btn">Logout</button>
+        </div>
+          
+      </div>
+
+        <button class="fluid ui primary button" id="agendar">Novo Agendamento</button>
+
+
+        <h2 class="ui header center aligned">Listagem</h2>
+        <div id="listagem">
+
+        </div>
+
+    <script src="./agendamento.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="../../../assets/Semantic-UI-CSS-master/semantic.js"></script>
+</body>
+</html>
