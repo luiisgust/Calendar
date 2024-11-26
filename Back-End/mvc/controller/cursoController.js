@@ -7,22 +7,17 @@ module.exports = (app) => {
     app.get("/curso", async (req, res) => {        
         const curso = new Curso()
         
-        res.setHeader("Access-Control-Allow-Origin","*")
         res.json(await curso.consultarTodos())        
     })
         
-    // app.get("/missao", (req, res) => {
-    //     res.render("Missao/listmissoes")
-    // })
+    app.get("/curso/:id", async (req, res) => {
+        const curso = new Curso()
+        const status = await curso.consultarUm(req.params.id)
 
-
-    // app.get("/altermissao/:id", async (req, res) =>{
-        
-    //     const missao = new MissaoDAO()        
-    //     const r = await missao.consultarUm(req.params.id)
-    //     console.log(r)
-    //     res.render('Missao/altermissao', { r })
-    // })
+        res.json(
+            status
+        )
+    })
 
    
     // Todos os post

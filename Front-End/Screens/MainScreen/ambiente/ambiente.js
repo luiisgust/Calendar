@@ -1,3 +1,9 @@
+const script = document.createElement('script');
+script.src = `./ambiente.js?ver=${Date.now()}`;
+document.body.appendChild(script);
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
     // Evento do botão de voltar
     document.getElementById('back-btn').addEventListener('click', () => {

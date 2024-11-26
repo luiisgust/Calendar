@@ -11,18 +11,14 @@ module.exports = (app) => {
         res.json(await docente.consultarTodos())        
     })
         
-    // app.get("/missao", (req, res) => {
-    //     res.render("Missao/listmissoes")
-    // })
+    app.get("/docente/:id", async (req, res) => {
+        const docente = new Docente()
+        const status = await docente.consultarUm(req.params.id)
 
-
-    // app.get("/altermissao/:id", async (req, res) =>{
-        
-    //     const missao = new MissaoDAO()        
-    //     const r = await missao.consultarUm(req.params.id)
-    //     console.log(r)
-    //     res.render('Missao/altermissao', { r })
-    // })
+        res.json(
+            status
+        )
+    })
 
    
     // Todos os post

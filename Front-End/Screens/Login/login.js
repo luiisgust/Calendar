@@ -1,5 +1,13 @@
 const form = document.getElementById('login-form');
 const message = document.getElementById('message');
+import {BASE_URL} from '../../config/config.js'
+
+document.addEventListener('DOMContentLoaded', () => {
+    const dynamicScript = document.createElement('script');
+    dynamicScript.type = `module`
+    dynamicScript.src = `login.js?ver=${Date.now()}`;
+    document.body.appendChild(dynamicScript);
+  });
 
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -13,7 +21,7 @@ form.addEventListener('submit', async (event) => {
     }
 
     try {
-        const response = await fetch('http://192.168.0.135:3000/logar', {
+        const response = await fetch(`${BASE_URL}/logar`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

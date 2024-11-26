@@ -218,6 +218,47 @@ class DataBaseMySQL {
         const query = await this.#connection.execute(sql)
         return query[0]
     }
+
+
+
+    // Tabelas restantes
+
+    async selectFator() {
+        const query = await this.#connection.query('select * from fator_aula')
+        return query[0]
+    }
+    async selectFatorId(id) {
+        const query = await this.#connection.query('select * from fator_aula where id_fator =' +id)
+        return query[0]
+    }
+
+    async selectFeriado() {
+        const query = await this.#connection.query('select * from feriados')
+        return query[0]
+    }
+    async selectFeriadoId(id) {
+        const query = await this.#connection.query('select * from feriado where id_feriado =' +id)
+        return query[0]
+    }
+
+    async selectHorario() {
+        const query = await this.#connection.query('select * from horario_aula')
+        return query[0]
+    }
+    async selectHorarioId(id) {
+        const query = await this.#connection.query('select * from horario_aula where id_horario =' +id)
+        return query[0]
+    }
+
+    async selectPeriodo() {
+        const query = await this.#connection.query('select * from periodo')
+        return query[0]
+    }
+    async selectPeriodoId(id) {
+        const query = await this.#connection.query('select * from periodo where id_periodo =' +id)
+        return query[0]
+    }
+    
 }
 
 module.exports = DataBaseMySQL

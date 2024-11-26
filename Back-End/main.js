@@ -1,45 +1,66 @@
-const express = require('express')
-const session = require('express-session')
-const app = express()
-const consign = require('consign')
-const cors = require('cors')
+const express = require('express');
+const session = require('express-session');
+const consign = require('consign');
+const cors = require('cors');
+const os = require('os');
 
-app.set('view engine','ejs')
-app.set('view','mvc/view')
+const app = express();
 
-app.use(express.json())
-app.use(express.urlencoded({extended:true}))
+// Detecta o IP ativo
+function detectActiveIP() {
+    const networkInterfaces = os.networkInterfaces();
+    let activeIP = null;
 
- 
-app.use(cors({
-    origin: 'http://192.168.0.135:8080', // Endereço do front-end
-    credentials: true // Permitir cookies/sessões
-}));
+    Object.keys(networkInterfaces).forEach((iface) => {
+        networkInterfaces[iface].forEach((details) => {
+            if (details.family === 'IPv4' && !details.internal) {
+                if (['192.168.0.135', '172.16.22.11'].includes(details.address)) {
+                    activeIP = details.address;
+                }
+            }
+        });
+    });
 
+    return activeIP;
+}
 
-const allowedOrigins = ['http://192.168.0.135:8080', 'http://localhost:8080'];
+// Configura a origem permitida com base no IP ativo
+const activeIP = detectActiveIP();
+let allowedOrigin;
+
+if (activeIP === '192.168.0.135') {
+    allowedOrigin = 'http://192.168.0.135:8080'; // Origin para o IP 192.168.0.135
+} else if (activeIP === '172.16.22.11') {
+    allowedOrigin = 'http://172.16.22.11:8080'; // Origin para o IP 172.16.22.11
+} else {
+    allowedOrigin = process.env.DEFAULT_ALLOWED_ORIGIN || 'http://localhost:8080'; // Fallback
+}
+
+console.log(`IP ativo detectado: ${activeIP}`);
+console.log(`Origem permitida configurada como: ${allowedOrigin}`);
+
+// Configuração do Express
+app.set('view engine', 'ejs');
+app.set('views', 'mvc/view');
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Configuração do CORS
 app.use(cors({
     origin: (origin, callback) => {
-        console.log('Origem da requisição:', origin); // Log de debug
-        
-        if (!origin || allowedOrigins.includes(origin)) {
+        console.log('Origem da requisição:', origin);
+        if (!origin || origin === allowedOrigin) {
             callback(null, true);
         } else {
-            console.error('Origem não permitida:', origin); // Log de erro
+            console.error('Origem não permitida:', origin);
             callback(new Error('Não autorizado pelo CORS'));
         }
     },
     credentials: true,
 }));
 
-app.use((req, res, next) => {
-    console.log('Origem da requisição:', req.headers.origin);
-    next();
-});
-
-
-
-
+// Configuração da sessão
 app.use(session({
     secret: process.env.SECRET || 'calendar',
     resave: false,
@@ -48,13 +69,17 @@ app.use(session({
         maxAge: 60 * 60 * 1000, // 1 hora
         secure: false, // Deve ser false se você estiver em HTTP
         httpOnly: true,
-        sameSite: 'lax'
-    }
+        sameSite: 'lax',
+    },
 }));
 
+// Consign para incluir controllers
 consign()
     .include('mvc/controller')
-    .into(app)
+    .into(app);
 
-    app.listen(process.env.PORT || 3000, () => console.log('Online server at port 3000'))
-module.exports = app 
+// Inicialização do servidor
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Servidor online na porta ${PORT}`));
+
+module.exports = app;

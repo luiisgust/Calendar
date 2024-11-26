@@ -1,3 +1,13 @@
+import {BASE_URL} from '../../../config/config.js'
+
+document.addEventListener('DOMContentLoaded', () => {
+  const dynamicScript = document.createElement('script');
+  dynamicScript.type = `module`
+  dynamicScript.src = `./agendamento.js?ver=${Date.now()}`;
+  document.body.appendChild(dynamicScript);
+});
+
+
 document.addEventListener('DOMContentLoaded', () => {
     // Evento do botão de voltar
     document.getElementById('back-btn').addEventListener('click', () => {
@@ -6,33 +16,54 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-async function carregarMissao(){
-let Agendamento = document.querySelector("#listagem")
+async function carregarMissao() {
+  const Agendamento = document.querySelector("#listagem");
 
-    const dados = await fetch('http://192.168.0.135:3000/agendamento')
-    const json = await dados.json()
-    let agendamentos = await json
+  // Busca todos os agendamentos
+  const dados = await fetch(`${BASE_URL}/agendamento`);
+  const agendamentos = await dados.json();
 
-    for(let agendados of agendamentos){
-      console.log(agendados)
-      Agendamento.innerHTML +=`
+  // Processa cada agendamento
+  for (let agendado of agendamentos) {
+    // Busca as informações das chaves estrangeiras
+    const [turma, docente, ambiente, periodo] = await Promise.all([
+      fetch(`${BASE_URL}/turma/${agendado.turmaA}`).then(res => res.json()),
+      fetch(`${BASE_URL}/docente/${agendado.docenteA}`).then(res => res.json()),
+      fetch(`${BASE_URL}/ambiente/${agendado.ambienteA}`).then(res => res.json()),
+      fetch(`${BASE_URL}/periodo/${agendado.periodoA}`).then(res => res.json())
+    ]);
+
+    console.log(turma, docente, ambiente, periodo);
+
+    // Adiciona os dados ao HTML
+    Agendamento.innerHTML += `
       <div class="row">
-            <div class="column">${agendados.nome}</div>
-            <div class="col border-end border-danger text-center desc">${missao.desc}</div>
-            <div class="col border-end border-danger text-center">${missao.recompensa}</div>
-            <div class="col border-start text-center"><button onclick="atualizar(${missao.id})" class="btn btn-success"><i class="bi bi-arrow-repeat"></i></button></div>
-            <div class="col border-start text-center"><button onclick="apagar(${missao.id})" class="btn btn-danger"><i class="bi bi-trash"></i></button></div>
-          </div>
-      `
-    } 
+        <div class="column">${turma ? turma.nomeT : 'Sem turma'}</div>
+        <div class="column">${docente ? docente.exibicaoD : 'Sem docente'}</div>
+        <div class="column">${ambiente ? ambiente.nomeA : 'Sem ambiente'}</div>
+        <div class="column">${periodo ? periodo.nome : 'Sem período'}</div>
+        <div class="column">${agendado.dataA}</div>
+        <div class="column">
+          <button onclick="atualizar(${agendado.id})" class="ui inverted primary button">
+            <i class="pencil alternate icon"></i>
+          </button>
+        </div>
+        <div class="column">
+          <button onclick="apagar(${agendado.id})" class="ui inverted red button">
+            <i class="trash alternate outline icon"></i>
+          </button>
+        </div>
+      </div>
+    `;
   }
+}
   
 
   async function apagar(id){     
 
-    const dados = await fetch('http://localhost:3000/agendamento/'+id, { method: 'DELETE' })
+    const dados = await fetch(`${BASE_URL}/agendamento/`+id, { method: 'DELETE' })
     const json = await dados.json()
-    let agendados = await json
+    let agendado = await json
           
     location.reload()
   }

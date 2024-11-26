@@ -7,22 +7,17 @@ module.exports = (app) => {
     app.get("/turma", async (req, res) => {        
         const turma = new Turma()
         
-        res.setHeader("Access-Control-Allow-Origin","*")
         res.json(await turma.consultarTodos())        
     })
-        
-    // app.get("/missao", (req, res) => {
-    //     res.render("Missao/listmissoes")
-    // })
+    
+    app.get("/turma/:id", async (req, res) => {
+        const turma = new Turma()
+        const status = await turma.consultarUm(req.params.id)
 
-
-    // app.get("/altermissao/:id", async (req, res) =>{
-        
-    //     const missao = new MissaoDAO()        
-    //     const r = await missao.consultarUm(req.params.id)
-    //     console.log(r)
-    //     res.render('Missao/altermissao', { r })
-    // })
+        res.json(
+            status
+        )
+    })
 
    
     // Todos os post

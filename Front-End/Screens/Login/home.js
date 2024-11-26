@@ -1,6 +1,15 @@
+import {BASE_URL} from '../../config/config.js'
+
+document.addEventListener('DOMContentLoaded', () => {
+    const dynamicScript = document.createElement('script');
+    dynamicScript.type = `module`
+    dynamicScript.src = `home.js?ver=${Date.now()}`;
+    document.body.appendChild(dynamicScript);
+  });
+
 document.addEventListener('DOMContentLoaded', () => {
     // Busca as informações do usuário
-    fetch('http://192.168.0.135:3000/conta', {
+    fetch(`${BASE_URL}/conta`, {
         method: 'GET',
         credentials: 'include'
     }).then(response => {
@@ -20,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Logout
     document.getElementById('logout-btn').addEventListener('click', async () => {
     try {
-        const response = await fetch('http://192.168.0.135:3000/logout', {
+        const response = await fetch(`${BASE_URL}/logout`, {
             method: 'POST', // Certifique-se de usar o método correto (conforme o servidor)
             credentials: 'include', // Inclui o cookie de sessão na requisição
         });
@@ -52,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.getElementById('agendamento').addEventListener('click', async (event) => {
     event.preventDefault(); // Evita o redirecionamento
     try {
-        const response = await fetch('http://192.168.0.135:3000/agendamento', {
+        const response = await fetch(`${BASE_URL}/agendamento`, {
             method: 'GET',
             credentials: 'include', // Inclui cookies de sessão
         });
@@ -74,7 +83,7 @@ document.getElementById('agendamento').addEventListener('click', async (event) =
 document.getElementById('ambiente').addEventListener('click', async (event) => {
     event.preventDefault(); // Evita o redirecionamento
     try {
-        const response = await fetch('http://192.168.0.135:3000/ambiente', {
+        const response = await fetch(`${BASE_URL}/ambiente`, {
             method: 'GET',
             credentials: 'include', // Inclui cookies de sessão
         });
@@ -95,7 +104,7 @@ document.getElementById('ambiente').addEventListener('click', async (event) => {
 document.getElementById('agendamento').addEventListener('click', async (event) => {
     event.preventDefault(); // Evita o redirecionamento
     try {
-        const response = await fetch('http://192.168.0.135:3000/agendamento', {
+        const response = await fetch(`${BASE_URL}/agendamento`, {
             method: 'GET',
             credentials: 'include', // Inclui cookies de sessão
         });
@@ -115,7 +124,7 @@ document.getElementById('agendamento').addEventListener('click', async (event) =
 document.getElementById('agendamento').addEventListener('click', async (event) => {
     event.preventDefault(); // Evita o redirecionamento
     try {
-        const response = await fetch('http://192.168.0.135:3000/agendamento', {
+        const response = await fetch(`${BASE_URL}/agendamento`, {
             method: 'GET',
             credentials: 'include', // Inclui cookies de sessão
         });
@@ -135,7 +144,7 @@ document.getElementById('agendamento').addEventListener('click', async (event) =
 document.getElementById('agendamento').addEventListener('click', async (event) => {
     event.preventDefault(); // Evita o redirecionamento
     try {
-        const response = await fetch('http://192.168.0.135:3000/agendamento', {
+        const response = await fetch(`${BASE_URL}/agendamento`, {
             method: 'GET',
             credentials: 'include', // Inclui cookies de sessão
         });

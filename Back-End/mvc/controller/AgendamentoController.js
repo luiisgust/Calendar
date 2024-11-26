@@ -16,7 +16,7 @@ module.exports = (app) => {
         const status = await agendamento.consultarUm(req.params.id)
 
         res.json(
-            [{...status}]
+            status
         )
     })
 

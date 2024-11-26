@@ -10,12 +10,12 @@ module.exports = (app) => {
         res.json(await ambiente.consultarTodos())        
     })
         
-    app.get("/agendamento/:id", async (req, res) => {
-        const agendamento = new Agendamento()
-        const status = await agendamento.consultarUm(req.params.id)
+    app.get("/ambiente/:id", async (req, res) => {
+        const ambiente = new Ambiente()
+        const status = await ambiente.consultarUm(req.params.id)
 
         res.json(
-            [{...status}]
+            status
         )
     })
 

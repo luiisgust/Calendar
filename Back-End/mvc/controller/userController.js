@@ -10,7 +10,7 @@ module.exports = (app) => {
         const status = await user.consultarUm(req.params.id)
 
         res.json(
-            [{...status}]
+            status
         )
     })
 
