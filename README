@@ -1,0 +1,29 @@
+Aqui vou falar como conseguir abrir meu codigo e sem problemas nenhum
+
+Etapa Banco de Dados
+
+1 - Este banco de dados não está ligado, por isso ofereci o arquivo "calendar.sql" para você ligar o banco antes de ter qualquer problema
+
+2 - Após ligar o banco com o arquivo "calendar.sql", terá um outro arquivos com chamadas para criar um usuario com senha para utilizar neste projeto
+
+##LEMBRE-SE, SEM O USUARIO CRIADO O PROJETO NÃO VAI FUNCIONAR
+
+3 - Após a criação de seu usuario, basta logar no banco com esse usuario e senha, e criar um novo usuario, pois o banco não vem com nenhum dado armazenado
+
+
+Etapa servidores
+
+1 - Primeiro, depois de instalar o arquivo, abra o terminal "powershell" e entre na pasta "Back-End" usando o comando "cd Back-End"
+
+2 - Agora dentro da pasta, para baixar as dependências que estão de fora, precisa utilizar o comando "npm i", apenas isso fará com que todas as dependencias usadas sejam baixadas 
+de uma única só vez
+
+3 - Para iniciar o servidor, basta você colocar o comando "npm start", e o servidor em node iniciará
+
+4 - Todo o projeto vai estar ligado no momento que dentro do terminal, você abrir um terminal em git Bash, para fazer funcionar o Front-End
+
+5 - Com o terminal Bash aberto você pode colocar esse comando "npx http-server -p 8080 --cors", esse comando iniciará o servidor local no bash para o Front-End configurado para ligar com o Cors(dependência)
+
+6 - Após iniciar o servidor, o próprio terminal solicitará um link direto para você acessar o Front-End, no navegador
+
+7 - Com o navegador aberto faça esse caminho "Front-End > Screens > Login > login.html"
