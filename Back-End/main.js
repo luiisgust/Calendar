@@ -3,6 +3,7 @@ const session = require('express-session');
 const consign = require('consign');
 const cors = require('cors');
 const os = require('os');
+const ejs = require('ejs')
 
 const app = express();
 
@@ -14,7 +15,7 @@ function detectActiveIP() {
     Object.keys(networkInterfaces).forEach((iface) => {
         networkInterfaces[iface].forEach((details) => {
             if (details.family === 'IPv4' && !details.internal) {
-                if (['192.168.0.135', '172.16.22.11'].includes(details.address)) {
+                if (['192.168.0.135', '172.16.22.11', '192.168.32.122'].includes(details.address)) {
                     activeIP = details.address;
                 }
             }
@@ -32,6 +33,8 @@ if (activeIP === '192.168.0.135') {
     allowedOrigin = 'http://192.168.0.135:8080'; // Origin para o IP 192.168.0.135
 } else if (activeIP === '172.16.22.11') {
     allowedOrigin = 'http://172.16.22.11:8080'; // Origin para o IP 172.16.22.11
+} else if (activeIP === '192.168.32.122') {
+    allowedOrigin = 'http://192.168.32.122:8080'; // Origin para o IP 172.16.22.11
 } else {
     allowedOrigin = process.env.DEFAULT_ALLOWED_ORIGIN || 'http://localhost:8080'; // Fallback
 }

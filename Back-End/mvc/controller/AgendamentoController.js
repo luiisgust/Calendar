@@ -19,6 +19,9 @@ module.exports = (app) => {
             status
         )
     })
+    app.get("/addagendamento", (req, res) => {
+        res.render('newagendamento.html');
+    })
 
    
     // Todos os post
@@ -35,7 +38,7 @@ module.exports = (app) => {
             periodoA: periodoA,
             dataA: dataA } = req.body;
 
-        res.setHeader("Access-Control-Allow-Origin","*")
+        
  
         let status;
 
