@@ -15,7 +15,7 @@ function detectActiveIP() {
     Object.keys(networkInterfaces).forEach((iface) => {
         networkInterfaces[iface].forEach((details) => {
             if (details.family === 'IPv4' && !details.internal) {
-                if (['192.168.0.135', '10.172.204.45'].includes(details.address)) {
+                if (['192.168.0.162', '10.172.204.45'].includes(details.address)) {
                     activeIP = details.address;
                 }
             }
@@ -29,8 +29,8 @@ function detectActiveIP() {
 const activeIP = detectActiveIP();
 let allowedOrigin;
 
-if (activeIP === '192.168.0.135') {
-    allowedOrigin = 'http://192.168.0.135:8080'; // Origin para o IP 192.168.0.135
+if (activeIP === '192.168.0.162') {
+    allowedOrigin = 'http://192.168.0.162:8080'; // Origin para o IP 192.168.0.162
 } else if (activeIP === '10.172.204.45') {
     allowedOrigin = 'http://10.172.204.45:8080'; // Origin para o IP 10.172.204.45
 } else {
@@ -78,6 +78,9 @@ app.use(session({
 consign()
     .include('mvc/controller')
     .into(app);
+
+
+
 
 // Inicialização do servidor
 const PORT = process.env.PORT || 3000;

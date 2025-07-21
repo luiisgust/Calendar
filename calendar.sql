@@ -158,6 +158,9 @@ CREATE TABLE `usuario` (
   `senha_usuario` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+INSERT INTO `usuario` (`id_usuario`, `nome_usuario`, `email_usuario`, `senha_usuario`) VALUES
+(1, 'Luis', 'gustavofon789@gmail.com', 'Eakemy26@');
+
 --
 -- Índices para tabelas despejadas
 --

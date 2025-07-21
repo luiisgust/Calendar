@@ -1,0 +1,149 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: #202124;
+  color: #e8eaed;
+}
+
+.app-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+}
+
+.sidebar {
+  width: 300px;
+  background-color: #303134;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background-color: #3c4043;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.calendar-semana {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 100px repeat(7, 1fr);
+  grid-auto-rows: 60px;
+  border-top: 1px solid #5f6368;
+  border-left: 1px solid #5f6368;
+  overflow-y: auto;
+}
+
+.calendar-semana div {
+  border-right: 1px solid #5f6368;
+  border-bottom: 1px solid #5f6368;
+  padding: 6px;
+  box-sizing: border-box;
+}
+
+.day-header {
+  background-color: #3c4043;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+}
+
+.day-header.today {
+  background-color: #4285f4;
+  color: white;
+}
+
+.day-header.selected {
+  background-color: #a142f4;
+  color: white;
+}
+
+.hour {
+  background-color: #303134;
+  text-align: center;
+  font-weight: bold;
+  color: white;
+}
+
+.footer {
+  background-color: #3c4043;
+  padding: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-top: 10px;
+}
+
+.calendar-days span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 32px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 4px;
+  color: white;
+}
+
+.today {
+  background-color: #4285f4;
+}
+
+.selected {
+  background-color: #a142f4;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 5px;
+  margin-top: 10px;
+  color: white;
+}
+
+.highlight-docente {
+  background-color: #f4b400;
+  color: black;
+}
+
+#docenteSelect {
+  background-color: #3c4043;
+  color: white;
+  border: 1px solid #5f6368;
+  border-radius: 4px;
+  padding: 10px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+  appearance: none;
+}
+
+#docenteSelect:focus {
+  outline: none;
+  border-color: #a142f4;
+  box-shadow: 0 0 5px #a142f4;
+}
+
+#docenteSelect option {
+  background-color: #3c4043;
+  color: white;
+}

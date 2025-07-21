@@ -1,20 +1,14 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendario</title>
-    <link rel="stylesheet" href="../../assets/Semantic-UI-CSS-master/semantic.css">
-    <style>
-      body{
-        padding: 10px;
-      }
-    </style>
+  <meta charset="UTF-8">
+  <title>Agenda Interativa - Tela Completa</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+  <link rel="stylesheet" href="home.css">
+  <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
 </head>
 <body>
-
-  <h1 class="ui header center aligned">Sistema de Cursos</h1>
-    <div class="ui menu">
+    <div class="ui menu black">
         <a class="item" id="agendamento">
           Agendamento
         </a>
@@ -43,8 +37,53 @@
 
       </div>
 
-    <script type="module" src="./home.js?ver=<?= Date.now(); ?>"></script>
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-    <script src="../../assets/Semantic-UI-CSS-master/semantic.js"></script>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div>
+        <h4 class="ui header" style="color: white;">Agenda Interativa</h4>
+      
+        <div class="ui buttons">
+          <button class="ui button" id="mes-anterior">&lt;</button>
+          <div class="or"></div>
+          <button class="ui button" id="mes-proximo">&gt;</button>
+        </div>
+      
+        <h5 id="mesAno" class="ui header" style="margin-top: 10px; color: white;"></h5>
+      
+        <div class="weekdays">
+          <span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span>
+        </div>
+        <div class="calendar-days" id="diasCalendario"></div>
+      
+        <!-- Docentes -->
+        <div style="margin-top: 20px;">
+          <label for="docenteSelect" style="color: white; font-weight: bold;">Selecionar docente:</label>
+          <select id="docenteSelect" class="ui dropdown" style="margin-top: 5px; width: 100%;">
+            <option value="">-- Escolha um docente --</option>
+            <!-- As opções serão inseridas via JS -->
+          </select>
+        </div>
+      
+        <div id="info-docente" class="ui message" style="background-color: #303134; color: white; margin-top: 10px; display: none;"></div>
+      
+        <div class="footer">
+          Dev.FSNC • © 2025
+        </div>
+      </div>
+    </div>
+  
+    <!-- Main content -->
+    <div class="main-content">
+      <div class="header">
+        <strong style="color:white;">Bem-vindo!</strong>
+        <input type="text" placeholder="Buscar evento..." class="ui input">
+      </div>
+      <div class="calendar-semana" id="calendarioPrincipal"></div>
+    </div>
+  </div>
+  <script type="module" src="home.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../../assets/Semantic-UI-CSS-master/semantic.js"></script>
 </body>
 </html>
