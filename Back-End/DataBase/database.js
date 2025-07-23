@@ -16,28 +16,28 @@ class DataBaseMySQL {
 
     // Agendamento
     async selectAgendamento() {
-        const query = await this.#connection.query('select * from agendamentos')
+        const query = await this.#connection.query('select * from agendamento')
         return query[0]
     }
     async selectAgendamentoId(id) {
-        const query = await this.#connection.query('select * from agendamentos where id_agendamento =' +id)
+        const query = await this.#connection.query('select * from agendamento where id_agendamento =' +id)
         return query[0]
     }
     async AddAgendamento(dados) {
-        const sql = `insert into agendamentos (id_turmaA, id_docenteA, id_ambienteA, id_periodoA, data_agendamento)
+        const sql = `insert into agendamento (id_turmaA, id_docenteA, id_ambienteA, id_periodoA, data_agendamento)
         values ('${dados.turmaA}','${dados.docenteA}','${dados.ambienteA}','${dados.periodoA}','${dados.data_agend}')`
 
         const query = await this.#connection.execute(sql)
         return query[0]
     }
     async delAgendamento(id) {
-        const sql = 'delete from agendamentos where id_agendamento ='+id
+        const sql = 'delete from agendamento where id_agendamento ='+id
 
         const query = await this.#connection.execute(sql)
         return query[0]
     }
     async upAgendamento(turmaA, docenteA, ambienteA, periodoA, data_agend, id) {
-        const sql = `update agendamentos
+        const sql = `update agendamento
             set id_turmaA = "${turmaA}",
                 id_docenteA = "${docenteA}",
                 id_ambienteA = "${ambienteA}",

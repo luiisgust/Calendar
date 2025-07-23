@@ -55,31 +55,23 @@ document.addEventListener("DOMContentLoaded", () => {
   if (agendarButton) {
     agendarButton.addEventListener("click", async () => {
       console.log("Botão 'agendar' clicado, iniciando requisição...");
-
+        
       try {
         const response = await fetch(`${BASE_URL}/addagendamento`, {
           method: 'GET',
           credentials: 'include',
         });
-
+      
         if (!response.ok) {
-          const text = await response.text();
-          console.error('Erro do servidor:', text);
+          const erro = await response.text();
+          console.error('Erro do servidor:', erro);
           alert(`Erro HTTP! Status: ${response.status}`);
           return;
         }
-
-        const data = await response.json();
-        console.log("Resposta recebida:", data);
-
-        if (data.success) {
-          alert(data.message);
-          console.log("Redirecionando para newagendamento.html");
-          window.location.href = 'newagendamento.html';
-        } else {
-          console.error("Erro ao fazer agendamento:", data.message);
-          alert('Erro para fazer novo agendamento. Tente novamente.');
-        }
+      
+        const html = await response.text();
+        document.documentElement.innerHTML = html; // ✅ substitui a página
+      
       } catch (error) {
         console.error("Erro ao fazer requisição:", error);
         alert('Ocorreu um erro ao fazer novo agendamento. Tente novamente mais tarde.');
@@ -88,7 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
   } else {
     console.error("Botão com ID 'agendar' não encontrado no DOM.");
   }
-});
+})
+
 
 // Função para carregar agendamentos
 async function carregarMissao() {

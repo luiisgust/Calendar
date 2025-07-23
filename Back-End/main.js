@@ -80,7 +80,7 @@ consign()
     .into(app);
 
 
-
+app.use(express.static("../Front-End/Screens/MainScreen"))
 
 // Inicialização do servidor
 const PORT = process.env.PORT || 3000;

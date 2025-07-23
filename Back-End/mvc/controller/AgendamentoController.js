@@ -1,4 +1,5 @@
 const Agendamento = require('../model/agendamentoModel')
+const Path = require('path')
 
 module.exports = (app) => {
 
@@ -20,7 +21,7 @@ module.exports = (app) => {
         )
     })
     app.get("/addagendamento", (req, res) => {
-        res.render('newagendamento.html');
+        res.sendFile(Path.resolve(__dirname, "../../../Front-End/Screens/MainScreen/agendamento/newagendamento.html"))
     })
 
    
@@ -48,6 +49,7 @@ module.exports = (app) => {
         }
         else{
             status = await agendamento.att(id, turmaA, docenteA, ambienteA, periodoA, dataA)
+            res.json({isAuth: status})
         }   
 
        

@@ -101,10 +101,10 @@ document.getElementById('ambiente').addEventListener('click', async (event) => {
     }
 });
 
-document.getElementById('agendamento').addEventListener('click', async (event) => {
+document.getElementById('curso').addEventListener('click', async (event) => {
     event.preventDefault(); // Evita o redirecionamento
     try {
-        const response = await fetch(`${BASE_URL}/agendamento`, {
+        const response = await fetch(`${BASE_URL}/curso`, {
             method: 'GET',
             credentials: 'include', // Inclui cookies de sessão
         });
@@ -116,15 +116,15 @@ document.getElementById('agendamento').addEventListener('click', async (event) =
         const data = await response.json();
         console.log(data);
         // Redireciona para a página de agendamento
-        window.location.href = '../MainScreen/agendamento/agendamento.html';
+        window.location.href = '../MainScreen/curso/curso.html';
     } catch (error) {
         console.error('Erro ao fazer fetch:', error);
     }
 });
-document.getElementById('agendamento').addEventListener('click', async (event) => {
+document.getElementById('docente').addEventListener('click', async (event) => {
     event.preventDefault(); // Evita o redirecionamento
     try {
-        const response = await fetch(`${BASE_URL}/agendamento`, {
+        const response = await fetch(`${BASE_URL}/docente`, {
             method: 'GET',
             credentials: 'include', // Inclui cookies de sessão
         });
@@ -135,16 +135,16 @@ document.getElementById('agendamento').addEventListener('click', async (event) =
 
         const data = await response.json();
         console.log(data);
-        // Redireciona para a página de agendamento
-        window.location.href = '../MainScreen/agendamento/agendamento.html';
+        // Redireciona para a página de docente
+        window.location.href = '../MainScreen/docente/docente.html';
     } catch (error) {
         console.error('Erro ao fazer fetch:', error);
     }
 });
-document.getElementById('agendamento').addEventListener('click', async (event) => {
+document.getElementById('turma').addEventListener('click', async (event) => {
     event.preventDefault(); // Evita o redirecionamento
     try {
-        const response = await fetch(`${BASE_URL}/agendamento`, {
+        const response = await fetch(`${BASE_URL}/turma`, {
             method: 'GET',
             credentials: 'include', // Inclui cookies de sessão
         });
@@ -155,8 +155,8 @@ document.getElementById('agendamento').addEventListener('click', async (event) =
 
         const data = await response.json();
         console.log(data);
-        // Redireciona para a página de agendamento
-        window.location.href = '../MainScreen/agendamento/agendamento.html';
+        // Redireciona para a página de turma
+        window.location.href = '../MainScreen/turma/turma.html';
     } catch (error) {
         console.error('Erro ao fazer fetch:', error);
     }
