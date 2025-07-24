@@ -1,171 +1,11 @@
-import {BASE_URL} from '../../config/config.js'
+import { BASE_URL } from '../../config/config.js'
 
-document.addEventListener('DOMContentLoaded', () => {
-    const dynamicScript = document.createElement('script');
-    dynamicScript.type = `module`
-    dynamicScript.src = `home.js?ver=${Date.now()}`;
-    document.body.appendChild(dynamicScript);
-  });
+let dataReferencia = new Date();
+let diaSelecionado = new Date();
+let docentesApi = [];
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Busca as informações do usuário
-    fetch(`${BASE_URL}/conta`, {
-        method: 'GET',
-        credentials: 'include'
-    }).then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            console.error('Erro ao acessar a conta');
-        }
-    }).then(data => {
-        console.log(data);
-    })
-
-    .catch(error => {
-        document.getElementById('message').textContent = error.message;
-    });
-
-    // Logout
-    document.getElementById('logout-btn').addEventListener('click', async () => {
-    try {
-        const response = await fetch(`${BASE_URL}/logout`, {
-            method: 'POST', // Certifique-se de usar o método correto (conforme o servidor)
-            credentials: 'include', // Inclui o cookie de sessão na requisição
-        });
-
-        if (!response.ok) {
-            const text = await response.text(); // Captura resposta como texto para depuração
-            console.error('Erro do servidor:', text);
-            throw new Error(`Erro HTTP! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        if (data.success) {
-            alert(data.message); // Mensagem de sucesso (opcional)
-            window.location.href = 'login.html'; // Redireciona para a página de login
-        } else {
-            console.error('Erro ao fazer logout:', data.message);
-            alert('Erro ao fazer logout. Tente novamente.');
-        }
-    } catch (error) {
-        console.error('Erro ao fazer logout:', error);
-        alert('Ocorreu um erro ao fazer logout. Tente novamente mais tarde.');
-    }
-    });
-});
-
-
-
-document.getElementById('agendamento').addEventListener('click', async (event) => {
-    event.preventDefault(); // Evita o redirecionamento
-    try {
-        const response = await fetch(`${BASE_URL}/agendamento`, {
-            method: 'GET',
-            credentials: 'include', // Inclui cookies de sessão
-        });
-
-        if (!response.ok) {
-            throw new Error(`Erro HTTP! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log(data);
-        // Redireciona para a página de agendamento
-        window.location.href = '../MainScreen/agendamento/agendamento.html';
-    } catch (error) {
-        console.error('Erro ao fazer fetch:', error);
-    }
-});
-
-
-document.getElementById('ambiente').addEventListener('click', async (event) => {
-    event.preventDefault(); // Evita o redirecionamento
-    try {
-        const response = await fetch(`${BASE_URL}/ambiente`, {
-            method: 'GET',
-            credentials: 'include', // Inclui cookies de sessão
-        });
-
-        if (!response.ok) {
-            throw new Error(`Erro HTTP! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log(data);
-        // Redireciona para a página de ambiente
-        window.location.href = '../MainScreen/ambiente/ambiente.html';
-    } catch (error) {
-        console.error('Erro ao fazer fetch:', error);
-    }
-});
-
-document.getElementById('curso').addEventListener('click', async (event) => {
-    event.preventDefault(); // Evita o redirecionamento
-    try {
-        const response = await fetch(`${BASE_URL}/curso`, {
-            method: 'GET',
-            credentials: 'include', // Inclui cookies de sessão
-        });
-
-        if (!response.ok) {
-            throw new Error(`Erro HTTP! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log(data);
-        // Redireciona para a página de agendamento
-        window.location.href = '../MainScreen/curso/curso.html';
-    } catch (error) {
-        console.error('Erro ao fazer fetch:', error);
-    }
-});
-document.getElementById('docente').addEventListener('click', async (event) => {
-    event.preventDefault(); // Evita o redirecionamento
-    try {
-        const response = await fetch(`${BASE_URL}/docente`, {
-            method: 'GET',
-            credentials: 'include', // Inclui cookies de sessão
-        });
-
-        if (!response.ok) {
-            throw new Error(`Erro HTTP! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log(data);
-        // Redireciona para a página de docente
-        window.location.href = '../MainScreen/docente/docente.html';
-    } catch (error) {
-        console.error('Erro ao fazer fetch:', error);
-    }
-});
-document.getElementById('turma').addEventListener('click', async (event) => {
-    event.preventDefault(); // Evita o redirecionamento
-    try {
-        const response = await fetch(`${BASE_URL}/turma`, {
-            method: 'GET',
-            credentials: 'include', // Inclui cookies de sessão
-        });
-
-        if (!response.ok) {
-            throw new Error(`Erro HTTP! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log(data);
-        // Redireciona para a página de turma
-        window.location.href = '../MainScreen/turma/turma.html';
-    } catch (error) {
-        console.error('Erro ao fazer fetch:', error);
-    }
-});
-
-
-// home.js (carregado como type="module")
-
-// Referências principais
+const nomeExibicao = document.getElementById('nomeExibicao');
+const logoutBtn = document.getElementById('logout-btn');
 const calendarioPrincipal = document.getElementById("calendarioPrincipal");
 const diasCalendario = document.getElementById("diasCalendario");
 const mesAno = document.getElementById("mesAno");
@@ -174,15 +14,106 @@ const btnMesProximo = document.getElementById("mes-proximo");
 const docenteSelect = document.getElementById("docenteSelect");
 const infoDocente = document.getElementById("info-docente");
 
-let dataReferencia = new Date();
-let diaSelecionado = new Date();
 
-const docentesApi = [
-  { nome: "Fulano", escala: "2025-07-23" },
-  { nome: "Beltrano", escala: "2025-07-21" }
-];
+async function validarSessao() {
+  try {
+    const response = await fetch(`${BASE_URL}/conta`, {
+      method: 'GET',
+      credentials: 'include',
+    });
 
-// Inicialização
+    if (!response.ok) throw new Error('Sessão inválida');
+    const data = await response.json();
+
+    nomeExibicao.innerHTML = `
+      <h4 class="ui header">Bem-vindo, ${data.nome || 'Usuário ' + data.userId} 👋</h4>
+    `;
+  } catch (error) {
+    console.error('Sessão expirada ou inexistente:', error);
+    window.location.href = '/login';
+  }
+}
+
+logoutBtn.addEventListener('click', async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/logout`, {
+      method: 'POST',
+      credentials: 'include',
+    });
+
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(`Erro HTTP! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    if (data.success) {
+      alert(data.message);
+      window.location.href = '/login';
+    } else {
+      alert('Erro ao fazer logout. Tente novamente.');
+    }
+  } catch (error) {
+    console.error('Erro ao fazer logout:', error);
+    alert('Ocorreu um erro ao fazer logout. Tente novamente mais tarde.');
+  }
+});
+
+
+function configurarNavegacao(idBotao, rotaBackend, paginaHtml) {
+  const botao = document.getElementById(idBotao);
+  if (!botao) return;
+
+  botao.addEventListener('click', async (event) => {
+    event.preventDefault();
+    try {
+      const response = await fetch(`${BASE_URL}/${rotaBackend}`, {
+        method: 'GET',
+        credentials: 'include'
+      });
+
+      if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
+      const data = await response.json();
+      console.log(`Dados de ${rotaBackend}:`, data);
+      window.location.href = paginaHtml;
+    } catch (error) {
+      console.error(`Erro ao navegar para ${rotaBackend}:`, error);
+    }
+  });
+}
+
+[
+  ['agendamento', 'agendamento', '/agendamentos'],
+  ['ambiente', 'ambiente', '/ambientes'],
+  ['curso', 'curso', '/cursos'],
+  ['docente', 'docente', '/docentes'],
+  ['turma', 'turma', '/turmas']
+].forEach(([id, rota, caminho]) => configurarNavegacao(id, rota, caminho));
+
+
+async function preencherSelectDocentes() {
+  try {
+    const response = await fetch(`${BASE_URL}/docente`, {
+      method: 'GET',
+      credentials: 'include'
+    });
+
+    docentesApi = await response.json();
+
+    docentesApi.forEach(docente => {
+      const option = document.createElement("option");
+      option.value = docente.nome;
+      option.textContent = docente.nome;
+      docenteSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Erro ao buscar docentes:', error);
+  }
+}
+
+
+validarSessao();
 init();
 
 function init() {
@@ -277,15 +208,6 @@ function gerarGradeSemana() {
 function mudarMes(valor) {
   dataReferencia.setMonth(dataReferencia.getMonth() + valor);
   atualizarMiniCalendario();
-}
-
-function preencherSelectDocentes() {
-  docentesApi.forEach(docente => {
-    const option = document.createElement("option");
-    option.value = docente.nome;
-    option.textContent = docente.nome;
-    docenteSelect.appendChild(option);
-  });
 }
 
 function verEscalaSelect() {

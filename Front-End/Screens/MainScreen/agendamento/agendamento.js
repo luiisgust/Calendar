@@ -2,95 +2,60 @@ import { BASE_URL } from "../../../config/config.js";
 
 // Evento que carrega dinamicamente o script
 document.addEventListener("DOMContentLoaded", () => {
-  // Carrega o script agendamento.js dinamicamente
-  const dynamicScript = document.createElement("script");
-  dynamicScript.type = `module`;
-  dynamicScript.src = `agendamento.js?ver=${Date.now()}`;
-  document.body.appendChild(dynamicScript);
-
   // Carrega os agendamentos
-  carregarMissao();
+  carregarAgendamento();
 
   // Configura o evento do botão de voltar
-  const backButton = document.getElementById("back-btn");
-  if (backButton) {
-    backButton.addEventListener("click", () => {
-      window.history.back();
-    });
-  } else {
-    console.error("Botão 'back-btn' não encontrado no DOM.");
-  }
+  document.getElementById("back-btn").addEventListener("click", () => {
+    window.history.back();
+  });
 
   document.getElementById('logout-btn').addEventListener('click', async () => {
     try {
-        const response = await fetch(`${BASE_URL}/logout`, {
-            method: 'POST', // Certifique-se de usar o método correto (conforme o servidor)
-            credentials: 'include', // Inclui o cookie de sessão na requisição
-        });
+      const response = await fetch(`${BASE_URL}/logout`, {
+        method: 'POST', // Certifique-se de usar o método correto (conforme o servidor)
+        credentials: 'include', // Inclui o cookie de sessão na requisição
+      });
 
-        if (!response.ok) {
-            const text = await response.text(); // Captura resposta como texto para depuração
-            console.error('Erro do servidor:', text);
-            throw new Error(`Erro HTTP! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        if (data.success) {
-            alert(data.message); // Mensagem de sucesso (opcional)
-            window.location.href = '../../Login/login.html'; // Redireciona para a página de login
-        } else {
-            console.error('Erro ao fazer logout:', data.message);
-            alert('Erro ao fazer logout. Tente novamente.');
-        }
-    } catch (error) {
-        console.error('Erro ao fazer logout:', error);
-        alert('Ocorreu um erro ao fazer logout. Tente novamente mais tarde.');
-    }
-    });
-  
-
-  // Configura o evento do botão 'agendar'
-  const agendarButton = document.getElementById("agendar");
-  if (agendarButton) {
-    agendarButton.addEventListener("click", async () => {
-      console.log("Botão 'agendar' clicado, iniciando requisição...");
-        
-      try {
-        const response = await fetch(`${BASE_URL}/addagendamento`, {
-          method: 'GET',
-          credentials: 'include',
-        });
-      
-        if (!response.ok) {
-          const erro = await response.text();
-          console.error('Erro do servidor:', erro);
-          alert(`Erro HTTP! Status: ${response.status}`);
-          return;
-        }
-      
-        const html = await response.text();
-        document.documentElement.innerHTML = html; // ✅ substitui a página
-      
-      } catch (error) {
-        console.error("Erro ao fazer requisição:", error);
-        alert('Ocorreu um erro ao fazer novo agendamento. Tente novamente mais tarde.');
+      if (!response.ok) {
+        const text = await response.text(); // Captura resposta como texto para depuração
+        console.error('Erro do servidor:', text);
+        console.error("Falha na comunicação com o servidor.")
+        throw new Error(`Erro HTTP! Status: ${response.status}`);
       }
-    });
-  } else {
-    console.error("Botão com ID 'agendar' não encontrado no DOM.");
-  }
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert(data.message); // Mensagem de sucesso (opcional)
+        window.location.href = '/login'; // Redireciona para a página de login
+      } else {
+        console.error('Erro ao fazer logout:', data.message);
+        alert('Erro ao fazer logout. Tente novamente.');
+      }
+    } catch (error) {
+      console.error('Erro ao fazer logout:', error);
+      alert('Ocorreu um erro ao fazer logout. Tente novamente mais tarde.');
+    }
+  });
+
+
+  // Configura o evento do botão 'agendar' 
+  document.getElementById("agendar").addEventListener("click", () => {
+    console.log("Redirecionando...");
+    window.location.href = '/addagendamento';
+  });
 })
 
 
 // Função para carregar agendamentos
-async function carregarMissao() {
-  const Agendamento = document.querySelector("#listagem");
+async function carregarAgendamento() {
+  const Agendamento = document.querySelector("#listagemA");
   Agendamento.innerHTML = "";
 
   // Adiciona os títulos fixos uma única vez
   Agendamento.innerHTML += `
-    <div class="titulos row">
+    <div class="titulos row" style="color: white;">
       <h3 class="ui header column">Turma</h3>
       <h3 class="ui header column">Docente</h3>
       <h3 class="ui header column">Local</h3>
@@ -100,28 +65,46 @@ async function carregarMissao() {
       <h3 class="ui header column">Apagar</h3>
     </div>
   `;
+  const formatarData = (dataISO) => {
+    if (!dataISO) return "Sem data";
+    const data = new Date(dataISO);
+    return data.toLocaleDateString("pt-BR", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
+  };
 
   try {
     const dados = await fetch(`${BASE_URL}/agendamento`);
+    if (!dados.ok) {
+      const texto = await dados.text();
+      console.error("Erro na resposta de /agendamento:", dados.status, texto);
+      return;
+    }
+
+    const contentType = dados.headers.get("content-type");
+    if (!contentType || !contentType.includes("application/json")) {
+      const texto = await dados.text();
+      console.error("Conteúdo inesperado de /agendamento:", texto);
+      return;
+    }
+
     const agendamentos = await dados.json();
 
-    for (let agendado of agendamentos) {
-      const [turma, docente, ambiente, periodo] = await Promise.all([
-        fetch(`${BASE_URL}/turma/${agendado.turmaA}`).then((res) => res.json()),
-        fetch(`${BASE_URL}/docente/${agendado.docenteA}`).then((res) => res.json()),
-        fetch(`${BASE_URL}/ambiente/${agendado.ambienteA}`).then((res) => res.json()),
-        fetch(`${BASE_URL}/periodo/${agendado.periodoA}`).then((res) => res.json()),
-      ]);
 
-      const formatarData = (dataISO) => {
-        if (!dataISO) return "Sem data";
-        const data = new Date(dataISO);
-        return data.toLocaleDateString("pt-BR", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-        });
-      };
+    for (let agendado of agendamentos) {
+      const turmaResp = await fetch(`${BASE_URL}/turma/${agendado.turmaA}`);
+      const turma = turmaResp.ok ? await turmaResp.json() : null;
+
+      const docenteResp = await fetch(`${BASE_URL}/docente/${agendado.docenteA}`);
+      const docente = docenteResp.ok ? await docenteResp.json() : null;
+
+      const ambienteResp = await fetch(`${BASE_URL}/ambiente/${agendado.ambienteA}`);
+      const ambiente = ambienteResp.ok ? await ambienteResp.json() : null;
+
+      const periodoResp = await fetch(`${BASE_URL}/periodo/${agendado.periodoA}`);
+      const periodo = periodoResp.ok ? await periodoResp.json() : null;
 
       Agendamento.innerHTML += `
         <div class="row">
@@ -151,6 +134,9 @@ async function carregarMissao() {
 // Função para deletar um item e atualizar a página
 async function del(id) {
   try {
+    const confirmacao = confirm("Tem certeza que deseja deletar?");
+    if (!confirmacao) return;
+
     const resposta = await fetch(`${BASE_URL}/agendamento/${id}`, { method: "DELETE" });
 
     if (resposta.ok) {

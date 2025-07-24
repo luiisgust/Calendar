@@ -1,0 +1,16 @@
+#agendamento {
+    padding: 10px;
+    background-color: #333;
+}
+
+#listagemA {
+    display: flex;
+    justify-content: space-around;
+    color: white;
+}
+
+.titulos {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: white;
+}

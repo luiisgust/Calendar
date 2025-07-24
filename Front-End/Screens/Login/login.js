@@ -2,18 +2,13 @@ const form = document.getElementById('login-form');
 const message = document.getElementById('message');
 import {BASE_URL} from '../../config/config.js'
 
-document.addEventListener('DOMContentLoaded', () => {
-    const dynamicScript = document.createElement('script');
-    dynamicScript.type = `module`
-    dynamicScript.src = `login.js?ver=${Date.now()}`;
-    document.body.appendChild(dynamicScript);
-  });
-
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const emailU = document.getElementById('emailU').value.trim();
     const senhaU = document.getElementById('senhaU').value.trim();
+    
+    console.log('Dados enviados:', { emailU, senhaU });
 
     if (!emailU || !senhaU) {
         message.textContent = 'Por favor, preencha todos os campos.';
@@ -40,7 +35,9 @@ form.addEventListener('submit', async (event) => {
 
         if (data.isAuth) {
             console.log('Resposta do servidor:', data); // Agora está no lugar correto
-            window.location.href = 'home.html';
+            message.style.color = 'green';
+            message.textContent = 'Login realizado com sucesso! Redirecionando...';
+            window.location.href = '/home';
         } else {
             message.textContent = 'Email ou senha incorretos.';
         }
@@ -51,4 +48,4 @@ form.addEventListener('submit', async (event) => {
 });
 
 
-console.log('Dados enviados:', { emailU, senhaU });
+
