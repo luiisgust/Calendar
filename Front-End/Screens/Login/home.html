@@ -1,60 +1,62 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <title>Agenda Interativa - Tela Completa</title>
   <link rel="stylesheet" href="../../assets/Semantic-UI-CSS-master/semantic.css">
   <link rel="stylesheet" href="/Login/home.css">
 </head>
+
 <body>
-    <div class="ui menu black">
-        <a class="item" id="agendamento">
-          Agendamento
-        </a>
-        <a class="item" id="ambiente">
-          Ambiente
-        </a>
-        <a class="item" id="curso">
-          Cursos
-        </a>
-        <a class="item" id="docente">
-          Docente
-        </a>
-        <a class="item" id="turma">
-          Turmas
-        </a>
-          <div class="right item">
-            <button class="ui inverted red button" id="logout-btn">Logout</button>
-          </div>
-          
-      </div>
-      <div id="nomeExibicao">
+  <div class="ui menu black">
+    <a class="item" id="agendamento">
+      Agendamento
+    </a>
+    <a class="item" id="ambiente">
+      Ambiente
+    </a>
+    <a class="item" id="curso">
+      Cursos
+    </a>
+    <a class="item" id="docente">
+      Docente
+    </a>
+    <a class="item" id="turma">
+      Turmas
+    </a>
+    <div class="right item">
+      <button class="ui inverted red button" id="logout-btn">Logout</button>
+    </div>
 
-      </div>
+  </div>
+  <div id="nomeExibicao">
 
-      <div class="calendar">
+  </div>
 
-      </div>
+  <div class="calendar">
+
+  </div>
 
   <div class="app-container">
     <!-- Sidebar -->
     <div class="sidebar">
       <div>
         <h4 class="ui header" style="color: white;">Agenda Interativa</h4>
-      
+
         <div class="ui buttons">
           <button class="ui button" id="mes-anterior">&lt;</button>
           <div class="or"></div>
           <button class="ui button" id="mes-proximo">&gt;</button>
         </div>
-      
+
         <h5 id="mesAno" class="ui header" style="margin-top: 10px; color: white;"></h5>
-      
+
         <div class="weekdays">
           <span>Dom</span><span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span>
         </div>
         <div class="calendar-days" id="diasCalendario"></div>
-      
+
         <!-- Docentes -->
         <div style="margin-top: 20px;">
           <label for="docenteSelect" style="color: white; font-weight: bold;">Selecionar docente:</label>
@@ -63,15 +65,15 @@
             <!-- As opções serão inseridas via JS -->
           </select>
         </div>
-      
+
         <div id="info-docente" class="ui message" style="background-color: #303134; color: white; margin-top: 10px; display: none;"></div>
-      
+
         <div class="footer">
           Dev.FSNC • © 2025
         </div>
       </div>
     </div>
-  
+
     <!-- Main content -->
     <div class="main-content">
       <div class="header">
@@ -82,9 +84,15 @@
     </div>
   </div>
 
+
+
+
+
   
   <script type="module" src="/Login/home.js"></script>
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+    integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
   <script src="../../assets/Semantic-UI-CSS-master/semantic.js"></script>
 </body>
+
 </html>

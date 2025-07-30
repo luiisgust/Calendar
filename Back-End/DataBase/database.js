@@ -21,7 +21,7 @@ class DataBaseMySQL {
         return query[0]
     }
     async selectAgendamentoId(id) {
-        const query = await this.#connection.query('select * from agendamento where id_agendamento =' +id)
+        const query = await this.#connection.query('select * from agendamento where id_agendamento =' + id)
         return query[0]
     }
     async AddAgendamento(dados) {
@@ -32,7 +32,7 @@ class DataBaseMySQL {
         return query[0]
     }
     async delAgendamento(id) {
-        const sql = 'delete from agendamento where id_agendamento ='+id
+        const sql = 'delete from agendamento where id_agendamento =' + id
 
         const query = await this.#connection.execute(sql)
         return query[0]
@@ -56,7 +56,7 @@ class DataBaseMySQL {
         return query[0]
     }
     async selectAmbienteId(id) {
-        const query = await this.#connection.query('select * from ambiente where id_ambiente =' +id)
+        const query = await this.#connection.query('select * from ambiente where id_ambiente =' + id)
         return query[0]
     }
     async AddAmbiente(dados) {
@@ -67,7 +67,7 @@ class DataBaseMySQL {
         return query[0]
     }
     async delAmbiente(id) {
-        const sql = 'delete from ambiente where id_ambiente ='+id
+        const sql = 'delete from ambiente where id_ambiente =' + id
 
         const query = await this.#connection.execute(sql)
         return query[0]
@@ -87,7 +87,7 @@ class DataBaseMySQL {
         return query[0]
     }
     async selectCursoId(id) {
-        const query = await this.#connection.query('select * from curso where id_curso =' +id)
+        const query = await this.#connection.query('select * from curso where id_curso =' + id)
         return query[0]
     }
     async AddCurso(dados) {
@@ -98,7 +98,7 @@ class DataBaseMySQL {
         return query[0]
     }
     async delCurso(id) {
-        const sql = 'delete from cursos where id_curso ='+id
+        const sql = 'delete from cursos where id_curso =' + id
 
         const query = await this.#connection.execute(sql)
         return query[0]
@@ -122,7 +122,7 @@ class DataBaseMySQL {
         return query[0]
     }
     async selectDocenteId(id) {
-        const query = await this.#connection.query('select * from docentes where id_docente =' +id)
+        const query = await this.#connection.query('select * from docentes where id_docente =' + id)
         return query[0]
     }
     async AddDocente(dados) {
@@ -133,7 +133,7 @@ class DataBaseMySQL {
         return query[0]
     }
     async delDocente(id) {
-        const sql = 'delete from docentes where id_docente ='+id
+        const sql = 'delete from docentes where id_docente =' + id
 
         const query = await this.#connection.execute(sql)
         return query[0]
@@ -155,7 +155,7 @@ class DataBaseMySQL {
         return query[0]
     }
     async selectTurmaId(id) {
-        const query = await this.#connection.query('select * from turmas where id_turma =' +id)
+        const query = await this.#connection.query('select * from turmas where id_turma =' + id)
         return query[0]
     }
     async AddTurma(dados) {
@@ -166,7 +166,7 @@ class DataBaseMySQL {
         return query[0]
     }
     async delTurma(id) {
-        const sql = 'delete from turmas where id_turma ='+id
+        const sql = 'delete from turmas where id_turma =' + id
 
         const query = await this.#connection.execute(sql)
         return query[0]
@@ -185,15 +185,15 @@ class DataBaseMySQL {
     }
 
     // Usuario
-    async selectUsuarioLogin(emailU, senhaU) { 
+    async selectUsuarioLogin(emailU, senhaU) {
         const query = await this.#connection.query(
-            'SELECT * FROM usuario WHERE email_usuario = ? AND senha_usuario = ?', 
+            'SELECT * FROM usuario WHERE email_usuario = ? AND senha_usuario = ?',
             [emailU, senhaU]
         );
         return query[0];
     }
     async selectUsuarioId(id) {
-        const query = await this.#connection.query('select * from usuario where id_usuario =' +id)
+        const query = await this.#connection.query('select * from usuario where id_usuario =' + id)
         return query[0]
     }
     async AddUsuario(dados) {
@@ -204,7 +204,7 @@ class DataBaseMySQL {
         return query[0]
     }
     async delUsuario(id) {
-        const sql = 'delete from usuario where id_usuario ='+id
+        const sql = 'delete from usuario where id_usuario =' + id
 
         const query = await this.#connection.execute(sql)
         return query[0]
@@ -220,6 +220,35 @@ class DataBaseMySQL {
         return query[0]
     }
 
+    // Evento
+    async eventAgenda(idTurma) {
+        const query = `
+        SELECT
+          c.nome_curso       AS nomeCurso,
+          t.nome_turma       AS nomeTurma,
+          d.nome_exibicao    AS nomeDocente,
+          a.nome_ambiente    AS nomeSala,
+          c.data_inicio      AS dataInicio,
+          c.data_final       AS dataFinal,
+          h.hora_inicio      AS horaInicio,
+          c.carga_horaria    AS cargaHoraria
+        FROM turmas t
+        JOIN cursos c ON t.id_curso = c.id_curso
+        JOIN docentes d ON t.id_docenteP = d.id_docente
+        JOIN agendamento ag ON t.id_turma = ag.id_turmaA
+        JOIN ambiente a ON ag.id_ambienteA = a.id_ambiente
+        JOIN horario_aula h ON c.id_horarioAula = h.id_horario
+        WHERE t.id_turma = ?
+        `
+
+        try {
+            const [rows] = await this.#connection.query(query, [idTurma])
+            return rows[0] // Retorna o primeiro resultado como objeto evento
+        } catch (error) {
+            throw new Error("Erro ao consultar evento: " + error.message)
+        }
+    }
+
 
 
     // Tabelas restantes
@@ -229,7 +258,7 @@ class DataBaseMySQL {
         return query[0]
     }
     async selectFatorId(id) {
-        const query = await this.#connection.query('select * from fator_aula where id_fator =' +id)
+        const query = await this.#connection.query('select * from fator_aula where id_fator =' + id)
         return query[0]
     }
 
@@ -238,7 +267,7 @@ class DataBaseMySQL {
         return query[0]
     }
     async selectFeriadoId(id) {
-        const query = await this.#connection.query('select * from feriado where id_feriado =' +id)
+        const query = await this.#connection.query('select * from feriado where id_feriado =' + id)
         return query[0]
     }
 
@@ -247,7 +276,7 @@ class DataBaseMySQL {
         return query[0]
     }
     async selectHorarioId(id) {
-        const query = await this.#connection.query('select * from horario_aula where id_horario =' +id)
+        const query = await this.#connection.query('select * from horario_aula where id_horario =' + id)
         return query[0]
     }
 
@@ -256,10 +285,10 @@ class DataBaseMySQL {
         return query[0]
     }
     async selectPeriodoId(id) {
-        const query = await this.#connection.query('select * from periodo where id_periodo =' +id)
+        const query = await this.#connection.query('select * from periodo where id_periodo =' + id)
         return query[0]
     }
-    
+
 }
 
 
